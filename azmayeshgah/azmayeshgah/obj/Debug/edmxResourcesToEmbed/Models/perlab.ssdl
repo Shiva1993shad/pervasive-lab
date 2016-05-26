@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="perlabModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="dataset">
+    <Key>
+      <PropertyRef Name="data_id" />
+    </Key>
+    <Property Name="data_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="filename" Type="nvarchar" MaxLength="500" />
+    <Property Name="description" Type="nvarchar" MaxLength="2000" />
+    <Property Name="attachment" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="events">
+    <Key>
+      <PropertyRef Name="event_id" />
+    </Key>
+    <Property Name="event_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="50" />
+    <Property Name="place" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="call" Type="datetime" Nullable="false" />
+    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="deadline" Type="datetime" />
+    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="2000" />
+  </EntityType>
+  <EntityType Name="news">
+    <Key>
+      <PropertyRef Name="news_id" />
+    </Key>
+    <Property Name="news_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="news_day" Type="datetime" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="50" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="3000" />
+    <Property Name="expire_day" Type="nvarchar" MaxLength="30" />
+    <Property Name="active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="people">
+    <Key>
+      <PropertyRef Name="people_id" />
+    </Key>
+    <Property Name="people_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+    <Property Name="gradstatus" Type="nvarchar" MaxLength="20" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="100" />
+    <Property Name="active" Type="nvarchar" MaxLength="4" />
+    <Property Name="picSrc" Type="nvarchar(max)" />
+    <Property Name="room" Type="nvarchar" MaxLength="50" />
+    <Property Name="phone" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="publication">
+    <Key>
+      <PropertyRef Name="pub_id" />
+    </Key>
+    <Property Name="pub_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="authors" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="jcon" Type="nvarchar" MaxLength="200" />
+    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="place" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+    <Property Name="people_id" Type="int" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="role" Type="int" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="500" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_publication_people">
+    <End Role="people" Type="Self.people" Multiplicity="0..1" />
+    <End Role="publication" Type="Self.publication" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="people">
+        <PropertyRef Name="people_id" />
+      </Principal>
+      <Dependent Role="publication">
+        <PropertyRef Name="people_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="perlabModelStoreContainer">
+    <EntitySet Name="dataset" EntityType="Self.dataset" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="events" EntityType="Self.events" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="news" EntityType="Self.news" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="people" EntityType="Self.people" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="publication" EntityType="Self.publication" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_publication_people" Association="Self.FK_publication_people">
+      <End Role="people" EntitySet="people" />
+      <End Role="publication" EntitySet="publication" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

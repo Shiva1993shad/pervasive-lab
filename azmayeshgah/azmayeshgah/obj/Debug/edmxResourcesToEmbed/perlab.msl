@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="perlabModelStoreContainer" CdmEntityContainer="perlabEntities">
+    <EntitySetMapping Name="events">
+      <EntityTypeMapping TypeName="perlabModel.event">
+        <MappingFragment StoreEntitySet="events">
+          <ScalarProperty Name="event_id" ColumnName="event_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="place" ColumnName="place" />
+          <ScalarProperty Name="call" ColumnName="call" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="deadline" ColumnName="deadline" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="people">
+      <EntityTypeMapping TypeName="perlabModel.person">
+        <MappingFragment StoreEntitySet="people">
+          <ScalarProperty Name="people_id" ColumnName="people_id" />
+          <ScalarProperty Name="picture" ColumnName="picture" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="lname" ColumnName="lname" />
+          <ScalarProperty Name="fname" ColumnName="fname" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="gradstatus" ColumnName="gradstatus" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="publications">
+      <EntityTypeMapping TypeName="perlabModel.publication">
+        <MappingFragment StoreEntitySet="publication">
+          <ScalarProperty Name="pub_id" ColumnName="pub_id" />
+          <ScalarProperty Name="authors" ColumnName="authors" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="jcon" ColumnName="jcon" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="place" ColumnName="place" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="perlabModel.user">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="fname" ColumnName="fname" />
+          <ScalarProperty Name="lname" ColumnName="lname" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="join_date" ColumnName="join_date" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="pass" ColumnName="pass" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="active" ColumnName="active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="news">
+      <EntityTypeMapping TypeName="perlabModel.news">
+        <MappingFragment StoreEntitySet="news">
+          <ScalarProperty Name="news_id" ColumnName="news_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="news_day" ColumnName="news_day" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="expire_date" ColumnName="expire_date" />
+          <ScalarProperty Name="active" ColumnName="active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="peopub" TypeName="perlabModel.peopub" StoreEntitySet="peopub">
+      <EndProperty Name="people">
+        <ScalarProperty Name="people_id" ColumnName="people_id" />
+      </EndProperty>
+      <EndProperty Name="publication">
+        <ScalarProperty Name="pub_id" ColumnName="pub_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="perlabModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="event">
+    <Key>
+      <PropertyRef Name="event_id" />
+    </Key>
+    <Property Name="event_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="place" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="call" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="active" Type="Boolean" Nullable="false" />
+    <Property Name="deadline" Type="DateTime" Precision="3" />
+    <Property Name="year" Type="Int32" Nullable="false" />
+    <Property Name="descrip" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="person">
+    <Key>
+      <PropertyRef Name="people_id" />
+    </Key>
+    <Property Name="people_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="lname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="fname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="active" Type="Boolean" Nullable="false" />
+    <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="gradstatus" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="publications" Relationship="Self.peopub" FromRole="people" ToRole="publication" />
+  </EntityType>
+  <EntityType Name="publication">
+    <Key>
+      <PropertyRef Name="pub_id" />
+    </Key>
+    <Property Name="pub_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="authors" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="jcon" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="year" Type="Int32" Nullable="false" />
+    <Property Name="active" Type="Boolean" Nullable="false" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="people" Relationship="Self.peopub" FromRole="publication" ToRole="people" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="fname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="lname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="phone" Type="Int32" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="join_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="pass" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="news">
+    <Key>
+      <PropertyRef Name="news_id" />
+      <PropertyRef Name="title" />
+      <PropertyRef Name="news_day" />
+      <PropertyRef Name="active" />
+    </Key>
+    <Property Name="news_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="news_day" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="descrip" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+    <Property Name="expire_date" Type="DateTime" Precision="3" />
+    <Property Name="active" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="peopub">
+    <End Role="people" Type="Self.person" Multiplicity="*" />
+    <End Role="publication" Type="Self.publication" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="perlabEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="events" EntityType="Self.event" />
+    <EntitySet Name="people" EntityType="Self.person" />
+    <EntitySet Name="publications" EntityType="Self.publication" />
+    <EntitySet Name="users" EntityType="Self.user" />
+    <EntitySet Name="news" EntityType="Self.news" />
+    <AssociationSet Name="peopub" Association="Self.peopub">
+      <End Role="people" EntitySet="people" />
+      <End Role="publication" EntitySet="publications" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

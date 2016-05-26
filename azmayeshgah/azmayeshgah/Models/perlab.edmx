@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="perlabModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="dataset">
+          <Key>
+            <PropertyRef Name="data_id" />
+          </Key>
+          <Property Name="data_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="filename" Type="nvarchar" MaxLength="500" />
+          <Property Name="description" Type="nvarchar" MaxLength="2000" />
+          <Property Name="attachment" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="events">
+          <Key>
+            <PropertyRef Name="event_id" />
+          </Key>
+          <Property Name="event_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="link" Type="nvarchar" MaxLength="50" />
+          <Property Name="place" Type="nvarchar" MaxLength="50" />
+          <Property Name="call" Type="nvarchar" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+          <Property Name="deadline" Type="nvarchar" MaxLength="50" />
+          <Property Name="year" Type="int" />
+          <Property Name="descrip" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="news">
+          <Key>
+            <PropertyRef Name="news_id" />
+          </Key>
+          <Property Name="news_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="news_day" Type="datetime" Nullable="false" />
+          <Property Name="link" Type="nvarchar" MaxLength="50" />
+          <Property Name="descrip" Type="nvarchar" MaxLength="3000" />
+          <Property Name="expire_day" Type="nvarchar" MaxLength="30" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="people">
+          <Key>
+            <PropertyRef Name="people_id" />
+          </Key>
+          <Property Name="people_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+          <Property Name="gradstatus" Type="nvarchar" MaxLength="20" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="link" Type="nvarchar" MaxLength="100" />
+          <Property Name="active" Type="nvarchar" MaxLength="4" />
+          <Property Name="picSrc" Type="nvarchar(max)" />
+          <Property Name="room" Type="nvarchar" MaxLength="50" />
+          <Property Name="phone" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="publication">
+          <Key>
+            <PropertyRef Name="pub_id" />
+          </Key>
+          <Property Name="pub_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="authors" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="jcon" Type="nvarchar" MaxLength="200" />
+          <Property Name="year" Type="int" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="place" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+          <Property Name="people_id" Type="int" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role" Type="int" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_publication_people">
+          <End Role="people" Type="Self.people" Multiplicity="0..1" />
+          <End Role="publication" Type="Self.publication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="people">
+              <PropertyRef Name="people_id" />
+            </Principal>
+            <Dependent Role="publication">
+              <PropertyRef Name="people_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="perlabModelStoreContainer">
+          <EntitySet Name="dataset" EntityType="Self.dataset" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="events" EntityType="Self.events" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="news" EntityType="Self.news" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="people" EntityType="Self.people" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="publication" EntityType="Self.publication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_publication_people" Association="Self.FK_publication_people">
+            <End Role="people" EntitySet="people" />
+            <End Role="publication" EntitySet="publication" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="perlabModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="dataset">
+          <Key>
+            <PropertyRef Name="data_id" />
+          </Key>
+          <Property Name="data_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="filename" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="people_id" />
+          </Key>
+          <Property Name="people_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="gradstatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="link" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="active" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="picSrc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="people1" Relationship="perlabModel.FK_people_people" FromRole="person" ToRole="person1" />
+          <NavigationProperty Name="person1" Relationship="perlabModel.FK_people_people" FromRole="person1" ToRole="person" />
+          <NavigationProperty Name="publications1" Relationship="perlabModel.FK_publication_people" FromRole="person" ToRole="publication" />
+          <Property Name="room" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="publication">
+          <Key>
+            <PropertyRef Name="pub_id" />
+          </Key>
+          <Property Name="pub_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="authors" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="jcon" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="year" Type="Int32" Nullable="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="people_id" Type="Int32" />
+          <NavigationProperty Name="person" Relationship="perlabModel.FK_publication_people" FromRole="publication" ToRole="person" />
+        </EntityType>
+        <EntityContainer Name="perlabEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="datasets" EntityType="Self.dataset" />
+          <EntitySet Name="people" EntityType="Self.person" />
+          <EntitySet Name="publications" EntityType="Self.publication" />
+          <EntitySet Name="user1" EntityType="perlabModel.user1" />
+          <AssociationSet Name="FK_people_people" Association="perlabModel.FK_people_people">
+            <End Role="person" EntitySet="people" />
+            <End Role="person1" EntitySet="people" />
+          </AssociationSet>
+          <AssociationSet Name="FK_publication_people" Association="perlabModel.FK_publication_people">
+            <End Role="person" EntitySet="people" />
+            <End Role="publication" EntitySet="publications" />
+          </AssociationSet>
+          <EntitySet Name="events" EntityType="perlabModel.event" />
+        </EntityContainer>
+        <EntityType Name="user1">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role" Type="Int16" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_people_people">
+          <End Type="perlabModel.person" Role="person" Multiplicity="1" />
+          <End Type="perlabModel.person" Role="person1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="people_id" />
+            </Principal>
+            <Dependent Role="person1">
+              <PropertyRef Name="people_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_publication_people">
+          <End Type="perlabModel.person" Role="person" Multiplicity="0..1" />
+          <End Type="perlabModel.publication" Role="publication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="people_id" />
+            </Principal>
+            <Dependent Role="publication">
+              <PropertyRef Name="people_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="ComplexType1">
+          <Property Type="DateTime" Name="call" />
+        </ComplexType>
+        <EntityType Name="event">
+          <Key>
+            <PropertyRef Name="event_id" />
+          </Key>
+          <Property Name="event_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="call" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="active" Type="Boolean" />
+          <Property Name="deadline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="year" Type="Int32" />
+          <Property Name="descrip" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="perlabModelStoreContainer" CdmEntityContainer="perlabEntities">
+          <EntitySetMapping Name="datasets">
+            <EntityTypeMapping TypeName="perlabModel.dataset">
+              <MappingFragment StoreEntitySet="dataset">
+                <ScalarProperty Name="data_id" ColumnName="data_id" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="attachment" ColumnName="attachment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="people">
+            <EntityTypeMapping TypeName="perlabModel.person">
+              <MappingFragment StoreEntitySet="people">
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="room" ColumnName="room" />
+                <ScalarProperty Name="picSrc" ColumnName="picSrc" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="people_id" ColumnName="people_id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="descrip" ColumnName="descrip" />
+                <ScalarProperty Name="gradstatus" ColumnName="gradstatus" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="publications">
+            <EntityTypeMapping TypeName="perlabModel.publication">
+              <MappingFragment StoreEntitySet="publication">
+                <ScalarProperty Name="people_id" ColumnName="people_id" />
+                <ScalarProperty Name="pub_id" ColumnName="pub_id" />
+                <ScalarProperty Name="authors" ColumnName="authors" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="jcon" ColumnName="jcon" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="place" ColumnName="place" />
+                <ScalarProperty Name="descrip" ColumnName="descrip" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user1">
+            <EntityTypeMapping TypeName="perlabModel.user1">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="events">
+            <EntityTypeMapping TypeName="perlabModel.event">
+              <MappingFragment StoreEntitySet="events">
+                <ScalarProperty Name="descrip" ColumnName="descrip" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="deadline" ColumnName="deadline" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="call" ColumnName="call" />
+                <ScalarProperty Name="place" ColumnName="place" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="event_id" ColumnName="event_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

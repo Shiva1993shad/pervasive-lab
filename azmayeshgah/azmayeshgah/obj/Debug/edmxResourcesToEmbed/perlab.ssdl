@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="perlabModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="events">
+    <Key>
+      <PropertyRef Name="event_id" />
+    </Key>
+    <Property Name="event_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="50" />
+    <Property Name="place" Type="nchar" MaxLength="50" Nullable="false" />
+    <Property Name="call" Type="datetime" Nullable="false" />
+    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="deadline" Type="datetime" />
+    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="2000" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'perlab.dbo.news' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="news">
+    <Key>
+      <PropertyRef Name="news_id" />
+      <PropertyRef Name="title" />
+      <PropertyRef Name="news_day" />
+      <PropertyRef Name="active" />
+    </Key>
+    <Property Name="news_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="news_day" Type="datetime" Nullable="false" />
+    <Property Name="link" Type="nvarchar" MaxLength="50" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="3000" />
+    <Property Name="expire_date" Type="datetime" />
+    <Property Name="active" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="people">
+    <Key>
+      <PropertyRef Name="people_id" />
+    </Key>
+    <Property Name="people_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="picture" Type="image" />
+    <Property Name="link" Type="nvarchar" MaxLength="50" />
+    <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="fname" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+    <Property Name="gradstatus" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'perlab.dbo.peopub' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="peopub">
+    <Key>
+      <PropertyRef Name="pub_id" />
+      <PropertyRef Name="people_id" />
+    </Key>
+    <Property Name="pub_id" Type="int" Nullable="false" />
+    <Property Name="people_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="publication">
+    <Key>
+      <PropertyRef Name="pub_id" />
+    </Key>
+    <Property Name="pub_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="authors" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="jcon" Type="nvarchar" MaxLength="200" />
+    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="place" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="fname" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="phone" Type="int" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="join_date" Type="datetime" Nullable="false" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="pass" Type="nvarchar" MaxLength="12" Nullable="false" />
+    <Property Name="descrip" Type="nvarchar" MaxLength="500" />
+    <Property Name="active" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_peopub_people">
+    <End Role="people" Type="Self.people" Multiplicity="1" />
+    <End Role="peopub" Type="Self.peopub" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="people">
+        <PropertyRef Name="people_id" />
+      </Principal>
+      <Dependent Role="peopub">
+        <PropertyRef Name="people_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_peopub_pub">
+    <End Role="publication" Type="Self.publication" Multiplicity="1" />
+    <End Role="peopub" Type="Self.peopub" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="publication">
+        <PropertyRef Name="pub_id" />
+      </Principal>
+      <Dependent Role="peopub">
+        <PropertyRef Name="pub_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="perlabModelStoreContainer">
+    <EntitySet Name="events" EntityType="Self.events" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="people" EntityType="Self.people" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="publication" EntityType="Self.publication" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="news" EntityType="Self.news" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [news].[news_id] AS [news_id], 
+    [news].[title] AS [title], 
+    [news].[news_day] AS [news_day], 
+    [news].[link] AS [link], 
+    [news].[descrip] AS [descrip], 
+    [news].[expire_date] AS [expire_date], 
+    [news].[active] AS [active]
+    FROM [dbo].[news] AS [news]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="peopub" EntityType="Self.peopub" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [peopub].[pub_id] AS [pub_id], 
+    [peopub].[people_id] AS [people_id]
+    FROM [dbo].[peopub] AS [peopub]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_peopub_people" Association="Self.FK_peopub_people">
+      <End Role="people" EntitySet="people" />
+      <End Role="peopub" EntitySet="peopub" />
+    </AssociationSet>
+    <AssociationSet Name="FK_peopub_pub" Association="Self.FK_peopub_pub">
+      <End Role="publication" EntitySet="publication" />
+      <End Role="peopub" EntitySet="peopub" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
