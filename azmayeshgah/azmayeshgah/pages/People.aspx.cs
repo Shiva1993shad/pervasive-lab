@@ -12,12 +12,13 @@ namespace azmayeshgah.pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+          
 
 
         }
         public IQueryable<Models.person> Get_Academic_Staff(int? PeopleId)
         {
+            
             var _db = new perlabEntities();
             
             {
@@ -32,6 +33,7 @@ namespace azmayeshgah.pages
                                  link = user.link,
                                  email = user.email,
                                  picSrc = user.picSrc == null ? "../image/no-image-icon-md.png" : "../Content/Pic/" + user.picSrc,
+                                 publications= user.publications, 
                              }).AsQueryable();
                 //query = query.Where(p => p.name.Contains(querystr) && p.type == "Academic Staff");
 
@@ -154,5 +156,47 @@ namespace azmayeshgah.pages
             }
         }
 
+
+        public IQueryable<Models.eventsfeed> Get_5event(int? eventID)
+        {
+            var _db = new perlabEntities();
+            {
+                var ev = _db.eventsfeeds.ToList();
+                IQueryable<Models.eventsfeed> query = (from even in ev
+                                                   select new eventsfeed
+                                                   {
+                                                       title = even.title,
+                                                       call = even.call,
+                                                       link = even.link,
+                                                       deadline = even.deadline,
+                                                       place=even.place,
+
+                                                   }).Take(5).AsQueryable();
+
+                return query;
+
+            }
+        }
+        public IQueryable<Models.newsfeed> Get_news(int? newsID)
+        {
+
+            var _db = new perlabEntities();
+
+            {
+                //string querystr = Request.QueryString["qusery"];
+                var newsfd = _db.newsfeeds.ToList();
+                IQueryable<Models.newsfeed> query = (from n in newsfd
+                                                     select new newsfeed
+                                                     {
+                                                         link = n.link,
+                                                         title = n.title,
+                                                         descrip = n.descrip,
+                                                         news_day = n.news_day,
+                                                     }).Take(5).AsQueryable();
+                //query = query.Where(p => p.name.Contains(querystr) && p.type == "Academic Staff");
+
+                return query;
+            }
+        }
     }
 }

@@ -76,11 +76,15 @@ namespace azmayeshgah
            // hl_addproduct.Visible = false;
             perlabEntities db = new perlabEntities();
             string username = HttpContext.Current.User.Identity.Name; // نام کاربری لاگین کرده
-            var user = db.user1.FirstOrDefault(p => p.username == username);
+            var user = db.users.FirstOrDefault(p => p.username == username);
             if (user != null)
             {
-               // Response.Redirect("~/Default.aspx");
+                if (Convert.ToInt32(user.role) == 1)
+                    manage.Visible = true;
+                else
+                { manage.Visible = false; }
             }
+            else manage.Visible = false;
 
         }
 

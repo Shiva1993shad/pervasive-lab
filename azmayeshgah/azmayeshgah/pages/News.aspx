@@ -3,52 +3,93 @@
    <h2><%:Title %></h2> 
     <div class="row">
     
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"
-            Width="600px" AutoGenerateSelectButton="True"
-            onselectedindexchanged="GridView1_SelectedIndexChanged">
-            <Columns>
-                <asp:BoundField DataField="news_id" HeaderText="News ID" />
-               
-                <asp:BoundField DataField="title" HeaderText="Title" />
-              
-                <asp:BoundField DataField="news_day" HeaderText="Time" />
-                <asp:BoundField DataField="link" HeaderText="Link" />
-                <asp:BoundField DataField="descrip" HeaderText="Description" />
-                <asp:BoundField DataField="expire_date" HeaderText="Expire Date" />
-                <asp:BoundField DataField="active" HeaderText="Active" />
-  
-            </Columns>
-
-</asp:GridView>
+        
         <br />
         <br />
        
-        <table ID="News_table">
-            <tr>
-                <td>
-                    Title
-                </td>
-                <td>
-                    <asp:TextBox ID="txtTitle" runat="server" Enabled="True"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Title
-                </td>
-                <td>
-                    <asp:TextBox ID="TextBox1" runat="server" Enabled="True"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Title
-                </td>
-                <td>
-                    <asp:TextBox ID="TextBox2" runat="server" Enabled="True"></asp:TextBox>
-                </td>
-            </tr>
-        </table>
+      <div class="col-md-8">
+            <div class="content">
+               <br />
+                <asp:ListView ID="NewsList" runat="server" 
+                DataKeyNames="news_id" GroupItemCount="1"
+                ItemType="azmayeshgah.Models.newsfeed" SelectMethod="Get_News">
+                <EmptyDataTemplate>
+                    <table >
+                        <tr>
+                            <td> No News</td>
+                        </tr>
+                    </table>
+                </EmptyDataTemplate>
+                <EmptyItemTemplate>
+                    <td/>
+                </EmptyItemTemplate>
+                <GroupTemplate>
+                    <tr id="itemPlaceholderContainer" runat="server">
+                        <td id="itemPlaceholder" runat="server"></td>
+                    </tr>
+                </GroupTemplate>
+                <ItemTemplate>
+                    <p>
+                        <table runat="server">
+                            <tr>
+                                <td>
+                                    
+                                        <img src="../image/news.jpg" width="140" height="140" style="border: solid" />
+                                          
+                                     </td>
+                                
+                                    <td id="Itemdescrip">
+                                         <%#:Item.descrip %>
+                                     </td>
+                                </tr>
+                                  <tr>   
+                                    <td  id="ItemTitle" style="color:blue; font-size:larger">
+                                            <%#:Item.title %>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                     <td>
+                                       <asp:Label ID="ItemDate" runat="server" Text="" Font-Size="Small"> <%#:Item.news_day %></asp:Label>
+                                       
+                                    </td>
+                                    </tr>
+                                     <tr>     
+                                     <td>
+                                    <a href="<%#:Item.link%>">           
+                                     Link of News
+                                    </a>
+                                     </td>
+                                     </tr>
+                                   
+                              <hr />
+                                
+                                
+                                   
+                            
+                          
+                        </table>
+                        </p>
+                  
+                </ItemTemplate>
+                <LayoutTemplate>
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table id="groupPlaceholderContainer" runat="server" style="width:100%">
+                                        <tr id="groupPlaceholder"></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </LayoutTemplate>
+            </asp:ListView>
        </div>
-
+          </div>
+        </div>
 </asp:Content>

@@ -21,12 +21,20 @@ namespace azmayeshgah.pages
             if (!IsPostBack)
             {
                 BindGridView();
+                txtPlace.Text = String.Empty;
+                txtDeadline.Text = String.Empty;
+                txtCall.Text = String.Empty;
+                txtYear.Text = String.Empty;
+                txtSearch.Text = String.Empty;
+                txtTitle.Text = String.Empty;
+                txtLink.Text = String.Empty;
+                txtDescrip.Text = String.Empty;
 
             }
 
             string Username = HttpContext.Current.User.Identity.Name;
             perlabEntities db = new perlabEntities();
-            var user = db.user1.FirstOrDefault(p => p.username == Username);
+            var user = db.users.FirstOrDefault(p => p.username == Username);
             if (user != null) // Not Login
             {
                 if (Convert.ToInt32(user.role) != 1) // Not admin
@@ -44,13 +52,28 @@ namespace azmayeshgah.pages
         public void BindGridView()
         {
             var db = new perlabEntities();
-            var result = from e in db.events
+            var result = from e in db.eventsfeeds
                          select new { e.event_id,e.title,e.link,e.place,e.deadline,e.call,e.year,e.descrip,e.active};
 
             GridView1.DataSource = result.ToList();
             GridView1.DataBind();
         }
-
+        /// <summary>
+        /// ///////////////
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void DeleteTxt()
+        {
+            txtPlace.Text = String.Empty;
+            txtDeadline.Text = String.Empty;
+            txtCall.Text = String.Empty;
+            txtYear.Text = String.Empty;
+            txtSearch.Text = String.Empty;
+            txtTitle.Text = String.Empty;
+            txtLink.Text = String.Empty;
+            txtDescrip.Text = String.Empty;
+        }
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -70,7 +93,7 @@ namespace azmayeshgah.pages
         {
             string Username = HttpContext.Current.User.Identity.Name;
             perlabEntities db = new perlabEntities();
-            var user = db.user1.FirstOrDefault(p => p.username == Username);
+            var user = db.users.FirstOrDefault(p => p.username == Username);
              if (user != null) // Login
             {
              if (Convert.ToInt32(user.role )!=1) // Not admin
@@ -79,7 +102,7 @@ namespace azmayeshgah.pages
              }
              else
              {
-                 azmayeshgah.Models.@event ev = new azmayeshgah.Models.@event()
+                 azmayeshgah.Models.eventsfeed ev = new azmayeshgah.Models.eventsfeed()
                  {
                      title = txtTitle.Text,
                      link = txtLink.Text,
@@ -87,15 +110,16 @@ namespace azmayeshgah.pages
                      call = txtCall.Text,
                      deadline = txtDeadline.Text,
                      year=int.Parse(txtYear.Text),
-                     active = (int.Parse(dropActive.SelectedItem.Text)==1)?true : false,
+                     active = (dropActive.SelectedItem.Text=="Yes")?true : false,
                      descrip = txtDescrip.Text,
 
                  };
-                 db.events.Add(ev);
+                 db.eventsfeeds.Add(ev);
                  db.SaveChanges();
                  LResult.Text = "Successfully Saved";
 
                  BindGridView();
+                 DeleteTxt();
                  LResult.ForeColor = Color.Green;
              }
                
@@ -112,9 +136,9 @@ namespace azmayeshgah.pages
         {
             perlabEntities db = new perlabEntities();
 
-            @event obj = new @event();
+            eventsfeed obj = new eventsfeed();
             obj.event_id= int.Parse((txtEventId.Text));
-            var result = (from p in db.events
+            var result = (from p in db.eventsfeeds
                           where p.event_id == obj.event_id
                           select p).Single();
 
@@ -123,40 +147,44 @@ namespace azmayeshgah.pages
             result.deadline = txtDeadline.Text;
             result.active = (int.Parse(dropActive.SelectedItem.Text) == 1) ? true : false;
             result.descrip = txtDescrip.Text;
-            db.events.Add(result);
+            db.eventsfeeds.Add(result);
             db.SaveChanges();
 
             BindGridView();
+            DeleteTxt();
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             perlabEntities db = new perlabEntities();
 
-            @event  obj = new @event();
+            eventsfeed  obj = new eventsfeed();
             obj.event_id = int.Parse((txtEventId.Text));
-            var result = (from p in db.events
+            var result = (from p in db.eventsfeeds
                           where p.event_id == obj.event_id
                           select p).Single();
 
-            db.events.Remove(result);
+            db.eventsfeeds.Remove(result);
             db.SaveChanges();
 
             BindGridView();
+            DeleteTxt();
+
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             perlabEntities db = new perlabEntities();
 
-            @event obj = new @event();
+            eventsfeed obj = new eventsfeed();
             var key = (txtSearch.Text);
-            var result = from ev in db.events
-                         where ev.title.Contains(key)
+            var result = from ev in db.eventsfeeds
+                         where ev.descrip.Contains(key)
                          select new { ev.title,ev.descrip,ev.call,ev.deadline };
 
             GridView1.DataSource = result.ToList();
             GridView1.DataBind();
+            DeleteTxt();
         }
       
     }

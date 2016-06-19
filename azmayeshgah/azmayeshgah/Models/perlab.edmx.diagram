@@ -5,13 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4445bf0b372e437c97e632e8506a003b" Name="Diagram1" ZoomLevel="72">
-        <EntityTypeShape EntityType="perlabModel.dataset" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="perlabModel.person" Width="1.5" PointX="1" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="perlabModel.publication" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="perlabModel.user1" Width="1.5" PointX="5" PointY="4.625" />
-        <AssociationConnector Association="perlabModel.FK_people_people" />
-        <AssociationConnector Association="perlabModel.FK_publication_people" />
-        <EntityTypeShape EntityType="perlabModel.event" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="perlabModel.dataset" Width="1.5" PointX="8.125" PointY="2.125" />
+        <EntityTypeShape EntityType="perlabModel.person" Width="1.5" PointX="2.375" PointY="1.125" />
+        <EntityTypeShape EntityType="perlabModel.publication" Width="1.5" PointX="5.375" PointY="1.25" />
+        <EntityTypeShape EntityType="perlabModel.user" Width="1.5" PointX="8.125" PointY="5.25" />
+        <AssociationConnector Association="perlabModel.people_public" />
+        <EntityTypeShape EntityType="perlabModel.newsfeed" Width="1.5" PointX="5.125" PointY="5.125" />
+        <EntityTypeShape EntityType="perlabModel.sysdiagram" Width="1.5" PointX="2.125" PointY="8.75" />
+        <EntityTypeShape EntityType="perlabModel.eventsfeed" Width="1.5" PointX="2.125" PointY="5.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,11 +12,13 @@ namespace azmayeshgah.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class dataset
+    public partial class newsfeed
     {
-        public int data_id { get; set; }
-        public string filename { get; set; }
-        public string description { get; set; }
-        public string filepath { get; set; }
+        public int news_id { get; set; }
+        public string title { get; set; }
+        public Nullable<System.DateTime> news_day { get; set; }
+        public string link { get; set; }
+        public string descrip { get; set; }
+        public Nullable<bool> active { get; set; }
     }
 }

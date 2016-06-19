@@ -16,7 +16,7 @@ namespace azmayeshgah.Models
     {
         public person()
         {
-            this.publications1 = new HashSet<publication>();
+            this.publications = new HashSet<publication>();
         }
     
         public int people_id { get; set; }
@@ -31,8 +31,6 @@ namespace azmayeshgah.Models
         public string room { get; set; }
         public string phone { get; set; }
     
-        public virtual person people1 { get; set; }
-        public virtual person person1 { get; set; }
-        public virtual ICollection<publication> publications1 { get; set; }
+        public virtual ICollection<publication> publications { get; set; }
     }
 }

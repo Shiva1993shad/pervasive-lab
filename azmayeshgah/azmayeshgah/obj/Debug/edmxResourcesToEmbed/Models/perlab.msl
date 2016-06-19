@@ -4,25 +4,10 @@
     <EntitySetMapping Name="datasets">
       <EntityTypeMapping TypeName="perlabModel.dataset">
         <MappingFragment StoreEntitySet="dataset">
-          <ScalarProperty Name="data_id" ColumnName="data_id" />
-          <ScalarProperty Name="filename" ColumnName="filename" />
+          <ScalarProperty Name="filepath" ColumnName="filepath" />
           <ScalarProperty Name="description" ColumnName="description" />
-          <ScalarProperty Name="attachment" ColumnName="attachment" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="events">
-      <EntityTypeMapping TypeName="perlabModel.event">
-        <MappingFragment StoreEntitySet="events">
-          <ScalarProperty Name="event_id" ColumnName="event_id" />
-          <ScalarProperty Name="title" ColumnName="title" />
-          <ScalarProperty Name="link" ColumnName="link" />
-          <ScalarProperty Name="place" ColumnName="place" />
-          <ScalarProperty Name="call" ColumnName="call" />
-          <ScalarProperty Name="active" ColumnName="active" />
-          <ScalarProperty Name="deadline" ColumnName="deadline" />
-          <ScalarProperty Name="year" ColumnName="year" />
-          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="filename" ColumnName="filename" />
+          <ScalarProperty Name="data_id" ColumnName="data_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -35,38 +20,83 @@
           <ScalarProperty Name="active" ColumnName="active" />
           <ScalarProperty Name="link" ColumnName="link" />
           <ScalarProperty Name="type" ColumnName="type" />
-          <ScalarProperty Name="people_id" ColumnName="people_id" />
-          <ScalarProperty Name="email" ColumnName="email" />
-          <ScalarProperty Name="descrip" ColumnName="descrip" />
-          <ScalarProperty Name="gradstatus" ColumnName="gradstatus" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="gradstatus" ColumnName="gradstatus" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="people_id" ColumnName="people_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="publications">
       <EntityTypeMapping TypeName="perlabModel.publication">
         <MappingFragment StoreEntitySet="publication">
-          <ScalarProperty Name="people_id" ColumnName="people_id" />
-          <ScalarProperty Name="pub_id" ColumnName="pub_id" />
-          <ScalarProperty Name="authors" ColumnName="authors" />
-          <ScalarProperty Name="title" ColumnName="title" />
-          <ScalarProperty Name="jcon" ColumnName="jcon" />
-          <ScalarProperty Name="year" ColumnName="year" />
-          <ScalarProperty Name="active" ColumnName="active" />
-          <ScalarProperty Name="type" ColumnName="type" />
-          <ScalarProperty Name="place" ColumnName="place" />
           <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="place" ColumnName="place" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="jcon" ColumnName="jcon" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="authors" ColumnName="authors" />
+          <ScalarProperty Name="pub_id" ColumnName="pub_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="user1">
-      <EntityTypeMapping TypeName="perlabModel.user1">
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="perlabModel.user">
         <MappingFragment StoreEntitySet="users">
           <ScalarProperty Name="password" ColumnName="password" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="role" ColumnName="role" />
           <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="people_public" TypeName="perlabModel.people_public" StoreEntitySet="people_public">
+      <EndProperty Name="publication">
+        <ScalarProperty Name="pub_id" ColumnName="pub_id" />
+      </EndProperty>
+      <EndProperty Name="person">
+        <ScalarProperty Name="people_id" ColumnName="people_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="newsfeeds">
+      <EntityTypeMapping TypeName="perlabModel.newsfeed">
+        <MappingFragment StoreEntitySet="newsfeed">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="news_day" ColumnName="news_day" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="news_id" ColumnName="news_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="perlabModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="eventsfeeds">
+      <EntityTypeMapping TypeName="perlabModel.eventsfeed">
+        <MappingFragment StoreEntitySet="eventsfeed">
+          <ScalarProperty Name="descrip" ColumnName="descrip" />
+          <ScalarProperty Name="year" ColumnName="year" />
+          <ScalarProperty Name="deadline" ColumnName="deadline" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="call" ColumnName="call" />
+          <ScalarProperty Name="place" ColumnName="place" />
+          <ScalarProperty Name="link" ColumnName="link" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="event_id" ColumnName="event_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

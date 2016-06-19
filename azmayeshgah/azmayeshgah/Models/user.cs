@@ -12,16 +12,12 @@ namespace azmayeshgah.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class @event
+    public partial class user
     {
-        public int event_id { get; set; }
-        public string title { get; set; }
-        public string link { get; set; }
-        public string place { get; set; }
-        public string call { get; set; }
-        public Nullable<bool> active { get; set; }
-        public string deadline { get; set; }
-        public Nullable<int> year { get; set; }
-        public string descrip { get; set; }
+        public int user_id { get; set; }
+        public int role { get; set; }
+        public string email { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
     }
 }

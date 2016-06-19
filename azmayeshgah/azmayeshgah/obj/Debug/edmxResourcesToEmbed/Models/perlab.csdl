@@ -1,5 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="perlabModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="perlabEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="datasets" EntityType="perlabModel.dataset" />
+    <EntitySet Name="people" EntityType="perlabModel.person" />
+    <EntitySet Name="publications" EntityType="perlabModel.publication" />
+    <EntitySet Name="users" EntityType="perlabModel.user" />
+    <AssociationSet Name="people_public" Association="perlabModel.people_public">
+      <End Role="person" EntitySet="people" />
+      <End Role="publication" EntitySet="publications" />
+    </AssociationSet>
+    <EntitySet Name="newsfeeds" EntityType="perlabModel.newsfeed" />
+    <EntitySet Name="sysdiagrams" EntityType="perlabModel.sysdiagram" />
+    <EntitySet Name="eventsfeeds" EntityType="perlabModel.eventsfeed" />
+  </EntityContainer>
+  <ComplexType Name="ComplexType1">
+    <Property Type="DateTime" Name="call" />
+  </ComplexType>
   <EntityType Name="dataset">
     <Key>
       <PropertyRef Name="data_id" />
@@ -7,21 +23,7 @@
     <Property Name="data_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="filename" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
-    <Property Name="attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
-  <EntityType Name="event">
-    <Key>
-      <PropertyRef Name="event_id" />
-    </Key>
-    <Property Name="event_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="place" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="call" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="active" Type="Boolean" Nullable="false" />
-    <Property Name="deadline" Type="DateTime" Precision="3" />
-    <Property Name="year" Type="Int32" Nullable="false" />
-    <Property Name="descrip" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="filepath" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="person">
     <Key>
@@ -31,80 +33,77 @@
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="gradstatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="link" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="active" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
     <Property Name="picSrc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="people1" Relationship="perlabModel.FK_people_people" FromRole="person" ToRole="person1" />
-    <NavigationProperty Name="person1" Relationship="perlabModel.FK_people_people" FromRole="person1" ToRole="person" />
-    <NavigationProperty Name="publications1" Relationship="perlabModel.FK_publication_people" FromRole="person" ToRole="publication" />
     <Property Name="room" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="publications" Relationship="perlabModel.people_public" FromRole="person" ToRole="publication" />
   </EntityType>
   <EntityType Name="publication">
     <Key>
       <PropertyRef Name="pub_id" />
     </Key>
     <Property Name="pub_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="authors" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="authors" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="jcon" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-    <Property Name="year" Type="Int32" Nullable="false" />
-    <Property Name="active" Type="Boolean" Nullable="false" />
-    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="year" Type="Int32" />
+    <Property Name="active" Type="Boolean" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="descrip" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="people_id" Type="Int32" />
-    <NavigationProperty Name="person" Relationship="perlabModel.FK_publication_people" FromRole="publication" ToRole="person" />
+    <NavigationProperty Name="people" Relationship="perlabModel.people_public" FromRole="publication" ToRole="person" />
   </EntityType>
-  <EntityContainer Name="perlabEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="datasets" EntityType="Self.dataset" />
-    <EntitySet Name="events" EntityType="Self.event" />
-    <EntitySet Name="people" EntityType="Self.person" />
-    <EntitySet Name="publications" EntityType="Self.publication" />
-    <EntitySet Name="user1" EntityType="perlabModel.user1" />
-    <AssociationSet Name="FK_people_people" Association="perlabModel.FK_people_people">
-      <End Role="person" EntitySet="people" />
-      <End Role="person1" EntitySet="people" />
-    </AssociationSet>
-    <AssociationSet Name="FK_publication_people" Association="perlabModel.FK_publication_people">
-      <End Role="person" EntitySet="people" />
-      <End Role="publication" EntitySet="publications" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="user1">
+  <EntityType Name="user">
     <Key>
       <PropertyRef Name="user_id" />
     </Key>
     <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="role" Type="Int16" Nullable="false" />
+    <Property Name="role" Type="Int32" Nullable="false" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
-  <Association Name="FK_people_people">
-    <End Type="perlabModel.person" Role="person" Multiplicity="1" />
-    <End Type="perlabModel.person" Role="person1" Multiplicity="0..1" />
-    <ReferentialConstraint>
-      <Principal Role="person">
-        <PropertyRef Name="people_id" />
-      </Principal>
-      <Dependent Role="person1">
-        <PropertyRef Name="people_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_publication_people">
-    <End Type="perlabModel.person" Role="person" Multiplicity="0..1" />
+  <Association Name="people_public">
+    <End Type="perlabModel.person" Role="person" Multiplicity="*" />
     <End Type="perlabModel.publication" Role="publication" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="person">
-        <PropertyRef Name="people_id" />
-      </Principal>
-      <Dependent Role="publication">
-        <PropertyRef Name="people_id" />
-      </Dependent>
-    </ReferentialConstraint>
   </Association>
+  <EntityType Name="newsfeed">
+    <Key>
+      <PropertyRef Name="news_id" />
+    </Key>
+    <Property Name="news_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="news_day" Type="DateTime" Precision="3" />
+    <Property Name="link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="descrip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="active" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="eventsfeed">
+    <Key>
+      <PropertyRef Name="event_id" />
+    </Key>
+    <Property Name="event_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="call" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="active" Type="Boolean" />
+    <Property Name="deadline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="year" Type="Int32" />
+    <Property Name="descrip" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

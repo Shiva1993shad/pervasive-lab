@@ -28,7 +28,9 @@ namespace azmayeshgah.Models
         public virtual DbSet<dataset> datasets { get; set; }
         public virtual DbSet<person> people { get; set; }
         public virtual DbSet<publication> publications { get; set; }
-        public virtual DbSet<user1> user1 { get; set; }
-        public virtual DbSet<@event> events { get; set; }
+        public virtual DbSet<user> users { get; set; }
+        public virtual DbSet<newsfeed> newsfeeds { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<eventsfeed> eventsfeeds { get; set; }
     }
 }

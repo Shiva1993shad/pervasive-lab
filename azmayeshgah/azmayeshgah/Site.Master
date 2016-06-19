@@ -65,6 +65,7 @@
                         <li><a runat="server" href="~/pages/Collabration">Collabration</a></li>
                         <li><a runat="server" href="~/pages/Event">Event</a></li>
                         <li><a runat="server" href="~/pages/News">News</a></li>
+                        <li><a id="manage" runat="server" href="~/pages/Management">Management</a></li>
                         <li><a runat="server" href="~/pages/Dataset">Dataset</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
                     </ul>

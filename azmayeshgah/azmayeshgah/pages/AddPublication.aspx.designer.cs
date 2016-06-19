@@ -11,7 +11,7 @@ namespace azmayeshgah.pages
 {
 
 
-    public partial class AddCollabration
+    public partial class AddPublication
     {
     }
 }

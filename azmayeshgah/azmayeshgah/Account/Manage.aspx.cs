@@ -4,122 +4,120 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using azmayeshgah.Models;
+using System.Web;
+using System.Drawing;
 
 namespace azmayeshgah.Account
 {
     public partial class Manage : System.Web.UI.Page
     {
-        protected string SuccessMessage
-        {
-            get;
-            private set;
-        }
+        //protected string SuccessMessage
+        //{
+        //    get;
+        //    private set;
+        //}
 
-        protected bool CanRemoveExternalLogins
-        {
-            get;
-            private set;
-        }
+        //protected bool CanRemoveExternalLogins
+        //{
+        //    get;
+        //    private set;
+        //}
 
-        private bool HasPassword(UserManager manager)
-        {
-            var user = manager.FindById(User.Identity.GetUserId());
-            return (user != null && user.PasswordHash != null);
-        }
+        //private bool HasPassword(UserManager manager)
+        //{
+        //    var user = manager.FindById(User.Identity.GetUserId());
+        //    return (user != null && user.PasswordHash != null);
+        //}
 
         protected void Page_Load()
         {
             if (!IsPostBack)
             {
-                // Determine the sections to render
-                UserManager manager = new UserManager();
-                if (HasPassword(manager))
+                perlabEntities db = new perlabEntities();
+                string usrname = HttpContext.Current.User.Identity.Name;
+                var user = db.users.FirstOrDefault(p => p.username == usrname);
+
+                if (user != null)
                 {
-                    changePasswordHolder.Visible = true;
+                    if (user.role == 1)
+                    {
+                      //  Register_user.Visible = true;
+                    }
+                    UserName.Text = user.username;
+                    Password.Text=user.password;
+                    Email.Text = user.email;
+                  
                 }
                 else
                 {
-                    setPassword.Visible = true;
-                    changePasswordHolder.Visible = false;
+                  //  Register_user.Visible = false;
+                    Response.Redirect("~/Default.aspx");
                 }
-                CanRemoveExternalLogins = manager.GetLogins(User.Identity.GetUserId()).Count() > 1;
-
-                // Render success message
-                var message = Request.QueryString["m"];
-                if (message != null)
-                {
-                    // Strip the query string from action
-                    Form.Action = ResolveUrl("~/Account/Manage");
-
-                    SuccessMessage =
-                        message == "ChangePwdSuccess" ? "Your password has been changed."
-                        : message == "SetPwdSuccess" ? "Your password has been set."
-                        : message == "RemoveLoginSuccess" ? "The account was removed."
-                        : String.Empty;
-                    successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
-                }
+                 
             }
         }
 
-        protected void ChangePassword_Click(object sender, EventArgs e)
+        //protected void ChangePassword_Click(object sender, EventArgs e)
+        //{
+        //    if (IsValid)
+        //    {
+        //        //UserManager manager = new UserManager();
+        //        //IdentityResult result = manager.ChangePassword(User.Identity.GetUserId(), CurrentPassword.Text, NewPassword.Text);
+        //        //if (result.Succeeded)
+        //        //{
+        //        //    Response.Redirect("?m=ChangePwdSuccess");
+        //        //}
+        //        //else
+        //        //{
+        //        //    AddErrors(result);
+        //        //}
+        //    }
+        //}
+
+        //protected void SetPassword_Click(object sender, EventArgs e)
+        //{
+        //    if (IsValid)
+        //    {
+               
+        //    }
+        //}
+
+        protected void btn_Save_Click(object sender, EventArgs e)
         {
-            if (IsValid)
+            perlabEntities db = new perlabEntities();
+            string usrname = HttpContext.Current.User.Identity.Name;
+            var user = db.users.FirstOrDefault(p => p.username == usrname);
+            if (user != null)
             {
-                UserManager manager = new UserManager();
-                IdentityResult result = manager.ChangePassword(User.Identity.GetUserId(), CurrentPassword.Text, NewPassword.Text);
-                if (result.Succeeded)
+                user.email = Email.Text;
+                if (db.users.Any(p => p.username == UserName.Text))
                 {
-                    Response.Redirect("~/Account/Manage?m=ChangePwdSuccess");
+                    LResult.Text = "this username already exist!";
+                    //;
+                    LResult.ForeColor = Color.Red;
                 }
-                else
+                else if (!db.users.Any(p => p.username == UserName.Text))
                 {
-                    AddErrors(result);
+                    user.username = UserName.Text;
                 }
+                if(Password.Text==Confirm_Password.Text)
+                {
+                    user.password = Password.Text;
+                }
+                
+                db.SaveChanges();
+                LResult.Text = "your information update successfully!";
+                LResult.ForeColor = Color.Green;
             }
-        }
-
-        protected void SetPassword_Click(object sender, EventArgs e)
-        {
-            if (IsValid)
+            else
             {
-                // Create the local login info and link the local account to the user
-                UserManager manager = new UserManager();
-                IdentityResult result = manager.AddPassword(User.Identity.GetUserId(), password.Text);
-                if (result.Succeeded)
-                {
-                    Response.Redirect("~/Account/Manage?m=SetPwdSuccess");
-                }
-                else
-                {
-                    AddErrors(result);
-                }
+                LResult.Text = "کاربری یافت نشد";
+                LResult.ForeColor = Color.Red;
             }
         }
 
-        public IEnumerable<UserLoginInfo> GetLogins()
-        {
-            UserManager manager = new UserManager();
-            var accounts = manager.GetLogins(User.Identity.GetUserId());
-            CanRemoveExternalLogins = accounts.Count() > 1 || HasPassword(manager);
-            return accounts;
-        }
+    
 
-        public void RemoveLogin(string loginProvider, string providerKey)
-        {
-            UserManager manager = new UserManager();
-            var result = manager.RemoveLogin(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
-            var msg = result.Succeeded
-                ? "?m=RemoveLoginSuccess"
-                : String.Empty;
-            Response.Redirect("~/Account/Manage" + msg);
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error);
-            }
-        }
+   
     }
 }

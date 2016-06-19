@@ -27,7 +27,7 @@ namespace azmayeshgah.pages
 
             string Username = HttpContext.Current.User.Identity.Name;
             perlabEntities db = new perlabEntities();
-            var user = db.user1.FirstOrDefault(p => p.username == Username);
+            var user = db.users.FirstOrDefault(p => p.username == Username);
             if (user != null) // Not Login
             {
                 if (Convert.ToInt32(user.role) != 1) // Not admin
@@ -71,7 +71,7 @@ namespace azmayeshgah.pages
         {
              string Username = HttpContext.Current.User.Identity.Name;
             perlabEntities db = new perlabEntities();
-            var user = db.user1.FirstOrDefault(p => p.username == Username);
+            var user = db.users.FirstOrDefault(p => p.username == Username);
            // if (user != null) // Login
             //{
                // if (Convert.ToInt32(user.role )!=1) // Not admin

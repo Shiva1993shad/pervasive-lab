@@ -14,17 +14,21 @@ namespace azmayeshgah.Models
     
     public partial class publication
     {
+        public publication()
+        {
+            this.people = new HashSet<person>();
+        }
+    
         public int pub_id { get; set; }
         public string authors { get; set; }
         public string title { get; set; }
         public string jcon { get; set; }
-        public int year { get; set; }
-        public bool active { get; set; }
+        public Nullable<int> year { get; set; }
+        public Nullable<bool> active { get; set; }
         public string type { get; set; }
         public string place { get; set; }
         public string descrip { get; set; }
-        public Nullable<int> people_id { get; set; }
     
-        public virtual person person { get; set; }
+        public virtual ICollection<person> people { get; set; }
     }
 }

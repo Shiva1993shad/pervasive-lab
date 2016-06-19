@@ -45,10 +45,9 @@
             &nbsp;</td>
         <td>
            
-            <asp:Button class="" ID="btnAdd" runat="server" Text="Add" Width="80px"
+            <asp:Button  ID="btnAdd" runat="server" Text="Add" Width="80px"
                 onclick="btnAdd_Click" />
-            <asp:Button ID="btnEdit" runat="server" onclick="btnEdit_Click" Text="Edit"
-                Width="80px" />
+           
             <asp:Button ID="btnDelete" runat="server" onclick="btnDelete_Click" Text="Delete"
                 Width="80px" />
             <asp:Label ID="LResult" runat="server" Text=""></asp:Label>

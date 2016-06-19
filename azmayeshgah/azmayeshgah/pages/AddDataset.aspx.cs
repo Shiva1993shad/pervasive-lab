@@ -1,6 +1,9 @@
 ﻿using azmayeshgah.Models;
+using azmayeshgah.MyUtility;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -22,8 +25,8 @@ namespace azmayeshgah.pages
 
             string Username = HttpContext.Current.User.Identity.Name;
             perlabEntities db = new perlabEntities();
-            var user = db.user1.FirstOrDefault(p => p.username == Username);
-            if (user != null) // Not Login
+            var user = db.users.FirstOrDefault(p => p.username == Username);
+            if (user != null) //  Login
             {
                 if (Convert.ToInt32(user.role) != 1) // Not admin
                 {
@@ -41,7 +44,7 @@ namespace azmayeshgah.pages
         {
             var db = new perlabEntities();
             var result = from e in db.datasets
-                         select new { e.data_id,e.filename,e.description,e.attachment};
+                         select new { e.data_id,e.filename,e.description,e.filepath};
 
             GridView1.DataSource = result.ToList();
             GridView1.DataBind();
@@ -55,13 +58,15 @@ namespace azmayeshgah.pages
             txtFileName.Text = GridView1.SelectedRow.Cells[2].Text;
             txtDescrip.Text = GridView1.SelectedRow.Cells[3].Text;
            
+
+           
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             string Username = HttpContext.Current.User.Identity.Name;
             perlabEntities db = new perlabEntities();
-            var user = db.user1.FirstOrDefault(p => p.username == Username);
+            var user = db.users.FirstOrDefault(p => p.username == Username);
              if (user != null) // Login
             {
              if (Convert.ToInt32(user.role )!=1) // Not admin
@@ -70,24 +75,22 @@ namespace azmayeshgah.pages
              }
              else
              {
-                 azmayeshgah.Models.@event ev = new azmayeshgah.Models.@event()
-                 {
-                     title = txtTitle.Text,
-                     link = txtLink.Text,
-                     place = txtPlace.Text,
-                     call = txtCall.Text,
-                     deadline = txtDeadline.Text,
-                     year=int.Parse(txtYear.Text),
-                     active = (int.Parse(dropActive.SelectedItem.Text)==1)?true : false,
-                     descrip = txtDescrip.Text,
+                   string  filePath = Path.GetFileName(FUIDataset.PostedFile.FileName);
+                   FUIDataset.PostedFile.SaveAs(Server.MapPath(azmayeshgah.MyUtility.MyConfigs.DatasetDir) + filePath); // تبدیل آدرس نسبی به آدرس حقیقی و ذخیره فایل در آنجا
+                    azmayeshgah.Models.dataset da = new azmayeshgah.Models.dataset()
+                    {
+                        filepath = filePath,
+                        filename=txtFileName.Text,
+                        description=txtDescrip.Text,
 
-                 };
-                 db.events.Add(ev);
-                 db.SaveChanges();
-                 LResult.Text = "Successfully Saved";
+                       
+                    };
+                    db.datasets.Add(da);
+                    db.SaveChanges();
+                    LResult.Text = "Successfully Saved";
 
-                 BindGridView();
-                 LResult.ForeColor = Color.Green;
+                    BindGridView();
+                    LResult.ForeColor = Color.Green;
              }
                
 
@@ -99,38 +102,18 @@ namespace azmayeshgah.pages
                }
         }
 
-        protected void btnEdit_Click(object sender, EventArgs e)
-        {
-            perlabEntities db = new perlabEntities();
-
-            @event obj = new @event();
-            obj.event_id= int.Parse((txtEventId.Text));
-            var result = (from p in db.events
-                          where p.event_id == obj.event_id
-                          select p).Single();
-
-            result.call = txtCall.Text;
-            result.link = txtLink.Text;
-            result.deadline = txtDeadline.Text;
-            result.active = (int.Parse(dropActive.SelectedItem.Text) == 1) ? true : false;
-            result.descrip = txtDescrip.Text;
-            db.events.Add(result);
-            db.SaveChanges();
-
-            BindGridView();
-        }
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             perlabEntities db = new perlabEntities();
 
-            @event  obj = new @event();
-            obj.event_id = int.Parse((txtEventId.Text));
-            var result = (from p in db.events
-                          where p.event_id == obj.event_id
+            dataset obj = new dataset();
+            obj.data_id = int.Parse((txtDataId.Text));
+            var result = (from p in db.datasets
+                          where p.data_id == obj.data_id
                           select p).Single();
 
-            db.events.Remove(result);
+            db.datasets.Remove(result);
             db.SaveChanges();
 
             BindGridView();
@@ -140,11 +123,11 @@ namespace azmayeshgah.pages
         {
             perlabEntities db = new perlabEntities();
 
-            @event obj = new @event();
+            dataset obj = new dataset();
             var key = (txtSearch.Text);
-            var result = from ev in db.events
-                         where ev.title.Contains(key)
-                         select new { ev.title,ev.descrip,ev.call,ev.deadline };
+            var result = from da in db.datasets
+                         where da.description.Contains(key)
+                         select new {da.filename,da.description};
 
             GridView1.DataSource = result.ToList();
             GridView1.DataBind();
@@ -152,5 +135,5 @@ namespace azmayeshgah.pages
       
     }
 
-    }
+   
 }

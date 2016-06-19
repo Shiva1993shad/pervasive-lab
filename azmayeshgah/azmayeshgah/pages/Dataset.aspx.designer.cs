@@ -11,5 +11,23 @@ namespace azmayeshgah.pages {
     
     
     public partial class Dataset {
+        
+        /// <summary>
+        /// UnderConstruct control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image UnderConstruct;
+        
+        /// <summary>
+        /// datagrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView datagrid;
     }
 }

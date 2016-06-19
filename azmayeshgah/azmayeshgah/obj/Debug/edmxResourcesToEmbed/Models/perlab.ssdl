@@ -7,33 +7,32 @@
     <Property Name="data_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="filename" Type="nvarchar" MaxLength="500" />
     <Property Name="description" Type="nvarchar" MaxLength="2000" />
-    <Property Name="attachment" Type="varbinary(max)" />
+    <Property Name="filepath" Type="nvarchar" MaxLength="1000" />
   </EntityType>
-  <EntityType Name="events">
+  <EntityType Name="eventsfeed">
     <Key>
       <PropertyRef Name="event_id" />
     </Key>
     <Property Name="event_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
-    <Property Name="link" Type="nvarchar" MaxLength="50" />
-    <Property Name="place" Type="nchar" MaxLength="50" Nullable="false" />
-    <Property Name="call" Type="datetime" Nullable="false" />
-    <Property Name="active" Type="bit" Nullable="false" />
-    <Property Name="deadline" Type="datetime" />
-    <Property Name="year" Type="int" Nullable="false" />
+    <Property Name="title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="link" Type="nvarchar(max)" />
+    <Property Name="place" Type="nvarchar" MaxLength="50" />
+    <Property Name="call" Type="nvarchar" MaxLength="50" />
+    <Property Name="active" Type="bit" />
+    <Property Name="deadline" Type="nvarchar" MaxLength="50" />
+    <Property Name="year" Type="int" />
     <Property Name="descrip" Type="nvarchar" MaxLength="2000" />
   </EntityType>
-  <EntityType Name="news">
+  <EntityType Name="newsfeed">
     <Key>
       <PropertyRef Name="news_id" />
     </Key>
     <Property Name="news_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="title" Type="nvarchar" MaxLength="100" Nullable="false" />
-    <Property Name="news_day" Type="datetime" Nullable="false" />
-    <Property Name="link" Type="nvarchar" MaxLength="50" />
-    <Property Name="descrip" Type="nvarchar" MaxLength="3000" />
-    <Property Name="expire_day" Type="nvarchar" MaxLength="30" />
-    <Property Name="active" Type="bit" Nullable="false" />
+    <Property Name="title" Type="nvarchar(max)" />
+    <Property Name="news_day" Type="datetime" />
+    <Property Name="link" Type="nvarchar(max)" />
+    <Property Name="descrip" Type="nvarchar(max)" />
+    <Property Name="active" Type="bit" />
   </EntityType>
   <EntityType Name="people">
     <Key>
@@ -51,20 +50,37 @@
     <Property Name="room" Type="nvarchar" MaxLength="50" />
     <Property Name="phone" Type="nvarchar" MaxLength="10" />
   </EntityType>
+  <EntityType Name="people_public">
+    <Key>
+      <PropertyRef Name="people_id" />
+      <PropertyRef Name="pub_id" />
+    </Key>
+    <Property Name="people_id" Type="int" Nullable="false" />
+    <Property Name="pub_id" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="publication">
     <Key>
       <PropertyRef Name="pub_id" />
     </Key>
     <Property Name="pub_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="authors" Type="nvarchar" MaxLength="500" Nullable="false" />
-    <Property Name="title" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="authors" Type="nvarchar" MaxLength="500" />
+    <Property Name="title" Type="nvarchar" MaxLength="200" />
     <Property Name="jcon" Type="nvarchar" MaxLength="200" />
-    <Property Name="year" Type="int" Nullable="false" />
-    <Property Name="active" Type="bit" Nullable="false" />
-    <Property Name="type" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="place" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="year" Type="int" />
+    <Property Name="active" Type="bit" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="place" Type="nvarchar" MaxLength="50" />
     <Property Name="descrip" Type="nvarchar" MaxLength="500" />
-    <Property Name="people_id" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="users">
     <Key>
@@ -76,28 +92,46 @@
     <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="password" Type="nvarchar" MaxLength="500" Nullable="false" />
   </EntityType>
-  <Association Name="FK_publication_people">
-    <End Role="people" Type="Self.people" Multiplicity="0..1" />
-    <End Role="publication" Type="Self.publication" Multiplicity="*" />
+  <Association Name="FK_people">
+    <End Role="people" Type="Self.people" Multiplicity="1" />
+    <End Role="people_public" Type="Self.people_public" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="people">
         <PropertyRef Name="people_id" />
       </Principal>
-      <Dependent Role="publication">
+      <Dependent Role="people_public">
         <PropertyRef Name="people_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_publication">
+    <End Role="publication" Type="Self.publication" Multiplicity="1" />
+    <End Role="people_public" Type="Self.people_public" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="publication">
+        <PropertyRef Name="pub_id" />
+      </Principal>
+      <Dependent Role="people_public">
+        <PropertyRef Name="pub_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="perlabModelStoreContainer">
     <EntitySet Name="dataset" EntityType="Self.dataset" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="events" EntityType="Self.events" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="news" EntityType="Self.news" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="eventsfeed" EntityType="Self.eventsfeed" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="newsfeed" EntityType="Self.newsfeed" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="people" EntityType="Self.people" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="people_public" EntityType="Self.people_public" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="publication" EntityType="Self.publication" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_publication_people" Association="Self.FK_publication_people">
+    <AssociationSet Name="FK_people" Association="Self.FK_people">
       <End Role="people" EntitySet="people" />
+      <End Role="people_public" EntitySet="people_public" />
+    </AssociationSet>
+    <AssociationSet Name="FK_publication" Association="Self.FK_publication">
       <End Role="publication" EntitySet="publication" />
+      <End Role="people_public" EntitySet="people_public" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

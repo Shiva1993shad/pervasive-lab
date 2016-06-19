@@ -38,54 +38,45 @@
                     <p>
                         <table runat="server">
                             <tr>
-                                <td>
+                                <td class="col-lg-1">
                                     
                                         <img src="<%#:Item.picSrc%>"
                                             width="120" height="140" style="border: solid" />
                                 </td>
-                                <td>
-                                   
-                                    <tr>
-                                    <td  id="ItemName" style="color:blue; font-size:medium">
-                                            <%#:Item.name %>
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                     <td>
-                                       <asp:Label ID="RoomLbl" runat="server" Text="Room"> <%#:Item.room %></asp:Label>
-                                       
-                                    </td>
-                                    </tr>
-                                    <tr>
-                                    <td>
-                                        <span>Telephone :</span>
+                                <td class="col-lg-2">
+                                   <p>
+                                       <span style="color:blue; font-size:medium"> <%#:Item.name %></span>
+                                       <br />
+                                       <span>
+                                           <asp:Label ID="RoomLbl" runat="server" Text="Room"> <%#:Item.room %></asp:Label>
+                                       </span>
+                                       <br />
+                                       <span>
+                                           <span>Telephone :</span>
                                         <%#:Item.phone %>
-                                     </td>
-                                     </tr>
-                                    <tr>   
-                                     <td>
-                                        <span>
+                                       </span>
+                                       <br />
+                                       <span>
+                                            <span>
                                            Email :
                                         </span>
                                          <a href="<%#:Item.email %>"></a> 
-                                     </td> 
-                                     </tr>
-                                     <tr>     
-                                     <td>
-                                    <a href="<%#:Item.link%>">           
+                                       </span>
+                                       <br />
+                                       <span>
+                                            <a href="<%#:Item.link%>">           
                                      Personal homepage
                                     </a>
-                                     </td>
-                                     </tr>
-                                     <tr>     
-                                     <td>
-                                    <a href="<%#:Item.publications1%>">           
+                                       </span>
+                                       <br />
+                                       <span>
+                                           <a href="Publication.aspx?id=<%#:Item.people_id%>">    
                                      Publications
                                     </a>
-                                     </td>
-                                     </tr>
-                              
-                                
+                                       </span>
+                                   </p>
+                             
+                                   
                                 </td>
                                    
                             </tr>
@@ -181,7 +172,7 @@
                                      </tr>
                                      <tr>     
                                      <td>
-                                    <a href="<%#:Item.publications1%>">           
+                                    <a href="<%#:Item.publications%>">           
                                      Publications
                                     </a>
                                      </td>
@@ -283,7 +274,7 @@
                                      </tr>
                                      <tr>     
                                      <td>
-                                    <a href="<%#:Item.publications1%>">           
+                                    <a href="<%#:Item.publications%>">           
                                      Publications
                                     </a>
                                      </td>
@@ -372,7 +363,7 @@
                                      </tr>
                                      <tr>     
                                      <td>
-                                    <a href="<%#:Item.publications1%>">           
+                                    <a href="<%#:Item.publications%>">           
                                      Publications
                                     </a>
                                      </td>
@@ -538,9 +529,128 @@
         <div class="col-md-4">
             <div class="col">
                 <h2>Events</h2><hr/>
+                <asp:ListView ID="EventID" runat="server" 
+                DataKeyNames="event_id" GroupItemCount="1"
+                ItemType="azmayeshgah.Models.eventsfeed" SelectMethod="Get_5event">
+                     <EmptyDataTemplate>
+                    <table >
+                        <tr>
+                            <td> No Item</td>
+                        </tr>
+                    </table>
+                </EmptyDataTemplate>
+                <EmptyItemTemplate>
+                    <td/>
+                </EmptyItemTemplate>
+                <GroupTemplate>
+                    <tr id="itemPlaceholderContainer" runat="server">
+                        <td id="itemPlaceholder" runat="server"></td>
+                    </tr>
+                </GroupTemplate>
+                <ItemTemplate>
+                    <p>
+                        <table runat="server">
+                            <tr >
+                                   <td style="color:blue">
+                                    <a href="<%#:Item.link%>">           
+                                     <%#:Item.title%>
+                                    </a>       
+                                    </td>
+                                    <td>
+                                       (  <%#:Item.place %>  )
+                                     </td>
+
+                                     <td style="font-size:smaller">
+                                       {   <%#:Item.deadline %>  }
+                                       
+                                    </td>
+                                  
+                                     
+                                   
+                            </tr>
+                          
+                        </table>
+                        </p>
+                  
+                </ItemTemplate>
+                <LayoutTemplate>
+                    <table style="width:100%;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table id="groupPlaceholderContainer" runat="server" style="width:100%">
+                                        <tr id="groupPlaceholder"></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </LayoutTemplate>
+            </asp:ListView>
             </div>
             <div class="col">
                 <h2>News</h2><hr/>
+                <asp:ListView ID="news" runat="server" 
+                DataKeyNames="news_id" GroupItemCount="1"
+                ItemType="azmayeshgah.Models.newsfeed" SelectMethod="Get_news">
+                     <EmptyDataTemplate>
+                    <table >
+                        <tr>
+                            <td> No Item</td>
+                        </tr>
+                    </table>
+                </EmptyDataTemplate>
+                <EmptyItemTemplate>
+                    <td/>
+                </EmptyItemTemplate>
+                <GroupTemplate>
+                    <tr id="itemPlaceholderContainer" runat="server">
+                        <td id="itemPlaceholder" runat="server"></td>
+                    </tr>
+                </GroupTemplate>
+                <ItemTemplate>
+                    <p>
+                        <table runat="server">
+                            <tr >
+                                   <td style="color:blue ; font-size:medium">
+                                    <a href="<%#:Item.link%>">           
+                                     <%#:Item.title%>
+                                    </a>       
+                                    </td>
+                                    <td style="font-size:small">
+                                      <%#:Item.news_day %>
+                                    </td>
+                                    
+                                     
+                                   
+                            </tr>
+                          
+                        </table>
+                        </p>
+                  
+                </ItemTemplate>
+                <LayoutTemplate>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table id="groupPlaceholderContainer" runat="server" style="width:100%">
+                                        <tr id="groupPlaceholder"></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                </LayoutTemplate>
+            </asp:ListView>
 
             </div>
         </div>

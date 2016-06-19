@@ -16,6 +16,26 @@ namespace azmayeshgah.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string Username = HttpContext.Current.User.Identity.Name;
+            perlabEntities db = new perlabEntities();
+            var user = db.users.FirstOrDefault(p => p.username == Username);
+            if(user != null)
+            {
+                if (user.role == 1) //  admin
+                {
+                    RegisterHyperLink.Visible = true;
+                }
+                else
+                {
+                    RegisterHyperLink.Visible = false;
+                }
+            }
+           
+            else
+            {
+                RegisterHyperLink.Visible = false;
+            }
+            
             RegisterHyperLink.NavigateUrl = "Register";
             OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
@@ -23,16 +43,18 @@ namespace azmayeshgah.Account
             {
                 RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
             }
+            
         }
 
         protected void Login_Click(object sender, EventArgs e)
         {
             perlabEntities db = new perlabEntities();
-            if (db.user1.Any(p => p.username== UserName.Text && p.password == Password.Text))
+            if (db.users.Any(p => p.username== UserName.Text && p.password == Password.Text))
             {
                 
                 FormsAuthentication.SetAuthCookie(UserName.Text, true);
                 Result.Text = "successfull log In";
+                
                 Response.Redirect("~/Default.aspx");
             }
             else
